@@ -1,9 +1,11 @@
 #include <animation.glsl>
+#include <quaternion.glsl>
 
 
 uniform mat4 u_ViewProjectionMatrix;
 uniform mat4 u_ModelMatrix;
 uniform mat4 u_NormalMatrix;
+uniform mat4 u_Moebius;
 
 
 in vec3 a_position;
@@ -59,6 +61,37 @@ vec4 getPosition()
     return pos;
 }
 
+   
+vec4 applyMoebiusTransformation(vec4 pos){
+   pos = vec4(pos.xyz/pos.w, 0);
+   // scaling
+//    pos = moebius(pos, mat4(
+//        1.0*vec4(1.0, 1.0, 1.0, 0.0),
+//        vec4(0,0,0,0),
+//        vec4(0,0,0,0),
+//        vec4(0,0,0,2)
+//    ));
+    pos = 1.0*pos;
+
+   // translation
+//    pos = moebius(pos, mat4(
+//        vec4(0,0,0,1),
+//        vec4(0,0,0,0),
+//        vec4(0,0,0,0),
+//        vec4(0,0,0,1)
+//    ));
+
+   // inversion + reflection
+   pos = moebius(pos, mat4(
+       vec4(0,0,0,0),
+       vec4(0,0,0,1),
+       vec4(0,0,0,1),
+       vec4(0,0,0,0)
+   ));
+    
+    return vec4(pos.xyz, 1.0);
+}
+
 
 #ifdef HAS_NORMAL_VEC3
 vec3 getNormal()
@@ -101,6 +134,7 @@ void main()
 {
     gl_PointSize = 1.0f;
     vec4 pos = u_ModelMatrix * getPosition();
+    pos = applyMoebiusTransformation(pos);
     v_Position = vec3(pos.xyz) / pos.w;
 
 #ifdef HAS_NORMAL_VEC3

@@ -1,6 +1,7 @@
 import { vec3 } from 'gl-matrix';
 import { jsToGl } from './utils.js';
 
+// TODO: update this to take into account M-transformation
 function getSceneExtents(gltf, sceneIndex, outMin, outMax)
 {
     for (const i of [0, 1, 2])
@@ -8,7 +9,7 @@ function getSceneExtents(gltf, sceneIndex, outMin, outMax)
         outMin[i] = Number.POSITIVE_INFINITY;
         outMax[i] = Number.NEGATIVE_INFINITY;
     }
-
+    
     const scene = gltf.scenes[sceneIndex];
 
     let nodeIndices = scene.nodes.slice();

@@ -15,6 +15,7 @@ import texturesShader from './shaders/textures.glsl';
 import tonemappingShader from './shaders/tonemapping.glsl';
 import shaderFunctions from './shaders/functions.glsl';
 import animationShader from './shaders/animation.glsl';
+import quaternionShader from './shaders/quaternion.glsl';
 import cubemapVertShader from './shaders/cubemap.vert';
 import cubemapFragShader from './shaders/cubemap.frag';
 import { gltfLight } from '../gltf/light.js';
@@ -51,6 +52,7 @@ class gltfRenderer
         shaderSources.set("textures.glsl", texturesShader);
         shaderSources.set("functions.glsl", shaderFunctions);
         shaderSources.set("animation.glsl", animationShader);
+        shaderSources.set("quaternion.glsl", quaternionShader);
         shaderSources.set("cubemap.vert", cubemapVertShader);
         shaderSources.set("cubemap.frag", cubemapFragShader);
 
